@@ -1001,12 +1001,12 @@ class Exporter:
         proxy_req = self.isolated
         if issubclass(export_cls, ResourceExport):
             res = group[resource_name] = export_cls(
-                config, host=self.hostname, proxy=getfqdn(), proxy_required=proxy_req
+                config, host=self.hostname, proxy=self.hostname, proxy_required=proxy_req
             )
             res.poll()
         else:
             config["params"]["extra"] = {
-                "proxy": getfqdn(),
+                "proxy": self.hostname,
                 "proxy_required": proxy_req,
             }
             group[resource_name] = export_cls(config)
