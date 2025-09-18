@@ -439,4 +439,10 @@ class PDUDaemonDriver(Driver, PowerResetMixin, PowerProtocol):
 
     @Driver.check_active
     def get(self):
-        raise NotImplementedError("pdudaemon does not support retrieving the port's state")
+        r = self._requests.get(self._build_url('status'))
+        r.raise_for_status()
+        match r.text():
+            case "on":
+                return True
+            case _:
+                return False
